@@ -1,14 +1,12 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
+import { homeScreenStyles as styles } from "./styles/homeScreen";
 
-const HomeScreen = () => (
-  <View style={styles.container}>
-    <Text style={styles.title}>Welcome to MyMeditationApp</Text>
-  </View>
-);
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
-  title: { fontSize: 24, fontWeight: "bold" },
-});
+const HomeScreen = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Start you journey to a peaceful life</Text>
+    </View>
+  );
+};
 
 export default HomeScreen;
