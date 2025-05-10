@@ -2,25 +2,30 @@ import React, { useRef, useState, useEffect } from "react";
 import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 import { styles } from "./styles/meditationScreen";
+import { Picker } from "react-native-web";
+
+const sounds_dir = [
+  { name: "forest", path: "../../assets/audio/forest_ambient.mp3" },
+  { name: "ocean", path: "../../assets/audio/ocean_ambiance_night.mp3" },
+  { name: "river", path: "../../assets/audio/river_water.mp3" },
+]
 
 const MeditationScreen = () => {
-  const [selectedTime, setSelectedTime] = useState(1);
+  const [selectedTime, setSelectedTime] = useState(5);
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [sound, setSound] = useState();
   const [endSound, setEndSound] = useState();
-
+  const [selectedSound, setSelectedSound] = useState(sounds_dir[0].path);
+  console.log(selectedSound)
   const timerRef = useRef(null);
 
   const loadSound = async () => {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../../assets/audio/forest-ambient-26130.mp3")
-    );
-
-    sound.setIsLoopingAsync(true);
+    const { sound } = await Audio.Sound.createAsync(require(selectedSound));
+    await sound.setIsLoopingAsync(true);
     setSound(sound);
     const { sound: endSound } = await Audio.Sound.createAsync(
-      require("../../assets/audio/zen-tone-high-202554.mp3")
+      require("../../assets/audio/zen_tone.mp3")
     );
     setEndSound(endSound);
   };
@@ -117,6 +122,19 @@ const MeditationScreen = () => {
               </TouchableOpacity>
             ))}
           </View>
+          <Picker
+            selectedValue={selectedSound}
+            onValueChange={(itemValue) => { console.log(itemValue); setSelectedSound(itemValue) }}
+            style={{ backgroundColor: "#FFF", marginVertical: 10 }}
+          >
+            {sounds_dir.map((soundObj) => (
+              <Picker.Item
+                label={soundObj.name}
+                value={soundObj.path}
+                key={soundObj.name}
+              />
+            ))}
+          </Picker>
         </>
       )}
 
